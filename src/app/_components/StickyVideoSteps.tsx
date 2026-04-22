@@ -78,21 +78,25 @@ export function StickyVideoSteps() {
   }, []);
 
   return (
-    <section className="mx-auto w-full pl-4 py-8 md:pl-10 p-0  ">
-      <div className="flex justify-between items-center my-10 mb-15 mx-20">
+    <section className="mx-auto w-full  py-8 md:pl-10 p-0  ">
+      <div className="flex justify-between items-center my-10 mb-15 mx-2">
         <h2 className="text-5xl font-bold  text-white md:text-7xl">
-          <span className="text-[#8a8a8a]">.</span>Design without <br />{" "}
-          <span className="text-[#8a8a8a] text-6xl ml-[20px]">
+          <span className="text-[#8a8a8a] mx-[-5]">.</span>Design without <br />{" "}
+          <span className="text-[#8a8a8a] text-6xl ml-h-90 mx-[5]">
             the busywork
           </span>
         </h2>
         <button className="cursor-pointer rounded-full font-bold text-lg bg-white px-6 py-2 text-black shadow-[10px_9px_29px_9px_rgba(0,21,50)] transition-opacity hover:opacity-90">
-          Peer stories
+        <li className="list-none p-0 m-0">
+          <a href="/PeerStoriesPage">
+            Peer stories
+          </a>
+          </li>  
         </button>
       </div>
       <div className="flex w-full flex-col gap-10 md:flex-row md:gap-10 mb-10">
         <div className="w-full md:w-[30%] pl-5">
-          <div className="md:sticky md:top-[250px]">
+          <div className="md:sticky md:top-5">
             <div className="mt-10 space-y-3">
               {STEPS.map((step, index) => (
                 <div key={step.title}>
@@ -104,7 +108,7 @@ export function StickyVideoSteps() {
                         block: "center",
                       })
                     }
-                    className={`block w-full border-b pb-3 text-left text-xl font-semibold transition-colors md:text-3xl ${
+                    className={`block w-full border-b pb-3 text-left text-s font-semibold transition-colors md:text-2xl ${
                       activeStep === index
                         ? "border-[#5f5f5f] text-white"
                         : "border-[#303030] text-[#c4c4c4] hover:text-white"
@@ -121,12 +125,12 @@ export function StickyVideoSteps() {
                     }`}
                   >
                     <div>
-                      <p className="text-md leading-tight text-[#9b9b9b] [font-family:var(--font-myfont)]">
+                      <p className="text-sm leading-tight text-[#9b9b9b] [font-family:var(--font-myfont)]">
                         {step.description}
                       </p>
                       <button
                         type="button"
-                        className="mt-4 text-2xl font-medium text-white transition-opacity hover:opacity-80"
+                        className="mt-4  font-medium text-white transition-opacity hover:opacity-80 md:text-2xl"
                       >
                         Learn more &gt;
                       </button>
@@ -138,7 +142,7 @@ export function StickyVideoSteps() {
           </div>
         </div>
 
-        <div className="w-full md:w-[70%]">
+        <div className="w-full  rounded-lg object-covermax-w-sm ">
           <div className="space-y-12">
             {STEPS.map((step, index) => (
               <div
@@ -149,7 +153,7 @@ export function StickyVideoSteps() {
                 data-step={index}
                 className="rounded-3xl"
               >
-                <div className="relative aspect-16/10 min-h-[360px] overflow-hidden rounded-2xl rounded-br-none rounded-tr-none md:min-h-[460px]">
+                <div className="relative aspect-18/10 min-h-90 overflow-hidden rounded-2xl rounded-br-none rounded-tr-none md:min-h-115">
                   {step.mediaSrc.endsWith(".mp4") ? (
                     <video
                       src={step.mediaSrc}

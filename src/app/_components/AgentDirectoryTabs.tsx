@@ -101,7 +101,7 @@ export function AgentDirectoryTabs() {
   return (
     <section className="mx-auto w-full  px-14 py-14 md:px-8 md:py-20 max-w-[1700px]">
       <div className="text-center mb-30 ">
-        <h2 className="text-5xl font-bold tracking-tight text-white md:text-6xl mt-12">
+        <h2 className="text-5xl font-bold tracking-tight text-white md:text-[77px] mt-12">
           <span className="text-[#8a8a8a]">.</span>Agents{" "}
           <span className="text-[#8a8a8a]">Directory</span>
         </h2>

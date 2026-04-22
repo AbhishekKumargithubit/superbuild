@@ -1,7 +1,25 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link"; 
+
 import { useEffect, useState } from "react";
+import { MessageSquareHeart, GraduationCap, BriefcaseBusiness, Users,CircleHelp, Menu, X } from "lucide-react";
+
+type MenuItem = {
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  href: string; 
+};
+
+const moreItems: MenuItem[] = [
+  { title: "Peer Stories", subtitle: "Real teams, real result", icon: <MessageSquareHeart size={18} />, href: "/PeerStoriesPage" },
+  { title: "For Students", subtitle: "Learn, build, get hired", icon: <GraduationCap size={18} />, href: "/Fellowship" },
+  { title: "Careers", subtitle: "Work on what matters", icon: <BriefcaseBusiness size={18} />, href: "/Career" },
+  { title: "Investors", subtitle: "Back the next category leader", icon: <Users size={18} />, href: "/InvestorPage_final" },
+  { title: "FAQ", subtitle: "Everything you need to know", icon: <CircleHelp size={18} />, href: "/SuperbuiltFaq" },
+];
 
 function PaperclipIcon({ className }: { className?: string }) {
   return (
@@ -24,6 +42,7 @@ function PaperclipIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
 
 function SendIcon({ className }: { className?: string }) {
   return (
@@ -48,6 +67,12 @@ function SendIcon({ className }: { className?: string }) {
 }
 
 export function HeroHeaderSection() {
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [openMore, setOpenMore] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [show, setShow] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+
   const texts = [
     <>
       Architects and designers lose 52% of their workweek to coordination
@@ -65,63 +90,64 @@ export function HeroHeaderSection() {
     </>,
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [show, setShow] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setShow(false);
-
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % texts.length);
         setShow(true);
-      }, 500); // fade out duration
-    }, 5000);
-
+      }, 400);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const onScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
+    const onScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <div className="mx-auto w-full px-6 pb-8 pt-28">
-      <nav className="fixed inset-x-0 top-4 z-50 flex w-full items-center justify-between px-6">
-        <div>
-          <Image
-            src="/icons/LOGONEW-01.png"
-            alt="logo"
-            width={130}
-            height={130}
-          />
-        </div>
-        <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-8 rounded-full border border-white/35 bg-white/12 px-8 py-2 text-[20px] font-semibold text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.5),0_10px_30px_rgba(0,21,50,0.28)] backdrop-blur-2xl">
-          <a href="#" className="transition-opacity hover:opacity-85">
-            About
-          </a>
-          <a href="#" className="transition-opacity hover:opacity-85">
-            Pricing
-          </a>
-          <a href="#" className="transition-opacity hover:opacity-85">
-            Agent Directory
-          </a>
-          <a href="#" className="transition-opacity hover:opacity-85">
-            More
-          </a>
+    <div className="w-full px-4 sm:px-6 pt-24 pb-10">
+
+      {/* NAVBAR */}
+      <nav className="fixed inset-x-0 top-4 z-50 flex items-center justify-between px-4 sm:px-6">
+        <Image src="/icons/LOGONEW-01.png" alt="logo" width={120} height={120} />
+
+        {/* Desktop Nav */}
+        <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-8 rounded-full border border-white/35 bg-white/12 px-8 py-2 text-[20px] font-semibold text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.5),0_10px_30px_rgba(0,21,50,0.28), ] backdrop-blur-2xl
+        shadow-lg shadow-blue-950">
+          <a href="#">About</a>
+          <a href="#">Pricing</a>
+          <a href="#">Agent Directory</a>
+
+          {/* dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setOpenMore(true)}
+            onMouseLeave={() => setOpenMore(false)}
+          >
+            <span className="cursor-pointer">More</span>
+
+            {openMore && (
+              <div className="absolute top-10 left-1/2 -translate-x-1/2 w-60 rounded-3xl bg-black p-4 shadow-xl border border-white/30">
+ {moreItems.map((item) => (
+                  <Link key={item.title} href={item.href} className="flex items-center gap-5 p-3 hover:bg-white/10 rounded-xl transition-colors">
+                    <div className="text-white fill-white shrink-0">{item.icon}</div>
+                    <div>
+                      <p className="text-white leading-tight">{item.title}</p>
+                      <p className="text-gray-400 text-sm">{item.subtitle}</p>
+                    </div>
+                  </Link>
+                ))}
+</div>
+
+            )}
+          </div>
         </div>
 
-        <div className="flex items-center gap-6 text-[20px] font-semibold">
+        {/* Right buttons */}
+        <div className="flex items-center gap-6 text-[15px] font-semibold">
           <button className="cursor-pointer text-white transition-opacity hover:opacity-80">
             Login
           </button>
@@ -135,41 +161,54 @@ export function HeroHeaderSection() {
             Try for free
           </button>
         </div>
+
+        {/* Mobile menu button */}
+        <button className="lg:hidden text-white" onClick={() => setMobileMenu(!mobileMenu)}>
+          {mobileMenu ? <X /> : <Menu />}
+        </button>
       </nav>
 
-      <section className="relative mt-16 flex flex-col items-center px-4 pb-16 text-center md:mt-[70px] md:pb-24">
-        <div className="max-w-[1800px] h-[182px] absolute top-[-400px]">
-          <Image
-            src="/icons/logo-superbuilt-01.png"
-            alt="superbuilt ai"
-            width={1791}
-            height={182}
-            className=""
-          />
+      {/* Mobile Menu */}
+      {mobileMenu && (
+        <div className="fixed inset-0 bg-black z-40 pt-32 px-6 text-center space-y-6 text-xl">
+          <p>About</p>
+          <p>Pricing</p>
+          <p>Agent Directory</p>
+          <p>Login</p>
+          <button className="bg-white text-black px-6 py-3 rounded-full">
+            Try free
+          </button>
         </div>
+      )}
+
+      {/* HERO */}
+      <section className="flex flex-col items-center text-center mt-[-250]">
+        <Image
+          src="/icons/logo-superbuilt-01.png"
+          alt="superbuilt"
+           width={1991}
+            height={152}
+          className="w-[85%] sm:w-[70%] lg:w-[85%]"
+        />
+
         <p
-          className={`mt-[245px] lg:mt-[455px] max-w-2xl text-[16px] font-medium text-white leading-snug transition-all duration-500 ease-in-out ${
-            show ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+          className={`mt-[-270] max-w-xl text-white text-sm sm:text-lg transition-all duration-500 ${
+            show ? "opacity-100" : "opacity-0"
           }`}
-          style={{
-            minHeight: "3.2em",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
         >
           {texts[currentIndex]}
         </p>
-        <div className="relative mt-12 w-full max-w-xl">
+
+        {/* INPUT BAR */}
+        <div className="relative mt-12 w-120 max-w-xl">
           <div className="relative flex w-full items-center gap-3 rounded-full bg-[#e6e6e6] px-4 py-3.5 shadow-[10px_9px_109px_30px_rgba(0,21,50)] md:px-5 md:py-2.5">
             <PaperclipIcon className="-rotate-45 shrink-0 text-[#6b6b6b]" />
             <input
               type="text"
               placeholder="One AI to run every AEC project"
-              className="min-w-0 flex-1 bg-transparent text-base text-[#1a1a1a] placeholder:text-[#7a7a7a] outline-none md:text-[17px]"
+              className="min-w-0 flex-1 bg-transparent text-base text-[#1a1a1a] placeholder:text-[#7a7a7a] outline-none md:text-[15px]"
             />
-            <button
+             <button
               type="button"
               className="flex shrink-0 items-center justify-center rounded-full p-1 text-[#1a1a1a] transition-opacity hover:opacity-70"
               aria-label="Send"
@@ -179,7 +218,7 @@ export function HeroHeaderSection() {
           </div>
         </div>
 
-        <p className="mt-[65px] text-sm text-[#F2F2F2] md:text-[15px]">
+        <p className="mt-10 text-gray-300 text-sm">
           Available in 29+ countries.
         </p>
       </section>
